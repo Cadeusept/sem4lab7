@@ -1,4 +1,4 @@
-#include <example.hpp>
+#include <server.hpp>
 
 int main() {
   example();
