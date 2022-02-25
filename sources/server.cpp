@@ -5,6 +5,7 @@
 #include <server.hpp>
 
 boost::recursive_mutex mutex;
+std::vector<std::shared_ptr<talk_to_client>> clients;
 
 void accept_thread() {
     boost::asio::ip::tcp::acceptor acceptor{service,
