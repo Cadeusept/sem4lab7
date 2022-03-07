@@ -5,21 +5,20 @@
 #include <server.hpp>
 
 boost::asio::io_service service;
-static boost::asio::ip::tcp::acceptor acceptor
-        {service, boost::asio::ip::tcp::endpoint
-        {boost::asio::ip::tcp::v4(), 8001}};
-std::vector<std::string> client_list;
-typedef boost::shared_ptr<talk_to_client> client_ptr;
+//std::vector<std::string> client_list;
 std::vector<client_ptr> clients;
 boost::recursive_mutex cli_mutex;
 
 void accept_thread() {
-    fflush(stdout);
+    boost::asio::ip::tcp::acceptor acceptor
+        {service, boost::asio::ip::tcp::endpoint
+        {boost::asio::ip::tcp::v4(), 8001}};
+
     while (true) {
-        client_ptr one(new talk_to_client); // talk_to_client - user defined class
-        acceptor.accept(one->_sock);
+        client_ptr new_client(new talk_to_client); // talk_to_client - user defined class
+        acceptor.accept(new_client->_sock);
         boost::recursive_mutex::scoped_lock lock{cli_mutex};
-        clients.push_back(one);
+        clients.push_back(new_client);
     }
 }
 
@@ -28,10 +27,11 @@ void handle_clients_thread() {
         boost::this_thread::sleep(boost::posix_time::millisec(1));
         boost::recursive_mutex::scoped_lock lock{cli_mutex};
         for (auto& client : clients) {
-          client.communicate();
-          // for each client calling answer_to_client();
+          client->answer_to_client();
         }
+
+        clients.erase(std::remove_if(clients.begin(), clients.end(),
+                    boost::bind(&talk_to_client::timed_out,_1)), clients.end());
         // and then erase clients that timed out
       }
 }
-
