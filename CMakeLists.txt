@@ -38,11 +38,10 @@ find_package(Boost CONFIG REQUIRED thread system regex chrono log filesystem log
 add_library(${PROJECT_NAME} STATIC
   # enum your files and delete this comment
         ${CMAKE_CURRENT_SOURCE_DIR}/sources/server.cpp
-)
+        ${CMAKE_CURRENT_SOURCE_DIR}/sources/client.cpp)
 
 add_executable(demo
-  ${CMAKE_CURRENT_SOURCE_DIR}/demo/main.cpp
-)
+  ${CMAKE_CURRENT_SOURCE_DIR}/demo/main.cpp)
 
 target_link_libraries(${PROJECT_NAME} ${BOOST_LIBRARIES})
 
