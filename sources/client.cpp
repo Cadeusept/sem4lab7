@@ -4,7 +4,7 @@
 
 boost::asio::io_service service;
 boost::asio::ip::tcp::endpoint ep(
-    boost::asio::ip::adress::from_string("127.0.0.1"), 8001);
+    boost::asio::ip::address::from_string("127.0.0.1"), 8001);
 
 void run_client(const std::string &client_name) {
   talk_to_server client(client_name);

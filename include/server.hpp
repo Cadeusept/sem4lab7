@@ -42,7 +42,7 @@ class talk_to_client {
   boost::posix_time::ptime _last_ping;
 
  public:
-  bool set_clients_changed() {_clients_changed = true;}
+  bool set_clients_changed() {_clients_changed = true; return true;}
 
   void update_clients_changed() {_clients_changed = !_clients_changed;}
 

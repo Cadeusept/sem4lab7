@@ -74,8 +74,8 @@ class talk_to_server {
     }
 
     void on_clients(const std::string &msg) {
-      std::string clients = msg.substr(8);
-      std::cout << _username << ", new clients list:" << clients;
+      std::string clients_list = msg.substr(8);
+      std::cout << _username << ", new clients list:" << clients_list;
     }
 
     void do_ask_clients() {
@@ -93,7 +93,12 @@ class talk_to_server {
       bool found = std::find(buf, buf + bytes, '\n') < buf + bytes;
       return found ? 0 : 1;
     }
- private:
+
+    void connect(boost::asio::ip::tcp::endpoint endpoint) {
+      _sock.connect(endpoint);
+    }
+
+   private:
     boost::asio::ip::tcp::socket _sock;
     enum {max_msg = 1024};
     int _already_read;
