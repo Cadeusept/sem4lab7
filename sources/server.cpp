@@ -21,13 +21,14 @@ bool client_data::timed_out() const {
 
 void client_data::answer_to_client() {
     try {
-
+        read_request();
+        process_request();
     }
     catch (boost::system::system_error&) {
-      stop();
+        stop();
     }
     if (timed_out())
-      stop();
+        stop();
 }
 
 void client_data::stop() {
