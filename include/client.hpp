@@ -17,8 +17,8 @@
 #include <boost/log/utility/setup/file.hpp>
 #include <boost/thread.hpp>
 #include <boost/asio.hpp>
-#include <boost/bind.hpp>
 #include <boost/asio/ip/tcp.hpp>
+#include <boost/bind.hpp>
 
 extern boost::asio::io_service service;
 
