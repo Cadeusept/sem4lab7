@@ -54,7 +54,7 @@ class talk_to_server {
 
       void on_clients();
 
-      void do_ask_clients();
+      void outpt_answer(const std::string &msg);
 
       void write(const std::string &msg);
 

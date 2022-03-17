@@ -36,9 +36,9 @@ void talk_to_server::read_answer() {
 void talk_to_server::process_answer() {
     std::string msg(_buffer, _already_read);
     if (msg.find("login ok") == 0) on_login();
-    else if (msg.find("ping ok") == 0) {}//wait_for_input();
+    else if (msg.find("ping ok") == 0) outpt_answer(msg);//wait_for_input();
     else if (msg.find("clients list changed") == 0) on_clients();
-    else if (msg.find("client list:") == 0) {}//wait_for_input();
+    else if (msg.find("client list:") == 0) outpt_answer(msg);//wait_for_input();
     else {
         std::cerr << "invalid message from server \"" << msg << "\"" << std::endl;
         write("invalid message from server \"" + msg + "\"\n");
@@ -47,6 +47,10 @@ void talk_to_server::process_answer() {
 
 void talk_to_server::on_clients() {
     write("clients");
+}
+
+void outpt_answer(const std::string &msg) {
+    std::cout << msg;
 }
 
 void talk_to_server::write(const std::string &msg) {
