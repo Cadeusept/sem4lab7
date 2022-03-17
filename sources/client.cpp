@@ -49,7 +49,7 @@ void talk_to_server::on_clients() {
     write("clients");
 }
 
-void outpt_answer(const std::string &msg) {
+void talk_to_server::outpt_answer(const std::string &msg) {
     std::cout << msg;
 }
 
