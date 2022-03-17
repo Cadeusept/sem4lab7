@@ -36,6 +36,8 @@ class talk_to_client {
 
         boost::asio::ip::tcp::socket &get_socket();
 
+        std::string username();
+
         void answer_to_client();
 
         void read_request();
@@ -47,6 +49,8 @@ class talk_to_client {
         void clients_changed();
 
         void on_ping();
+
+        void on_clients();
 
         void write(std::string msg);
 

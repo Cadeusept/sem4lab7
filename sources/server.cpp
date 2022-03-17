@@ -5,11 +5,16 @@
 #include <server.hpp>
 
 boost::asio::io_service service;
-std::vector<client_ptr> clients;
+typedef std::vector<client_ptr> cli_array;
+cli_array clients;
 boost::recursive_mutex cli_mutex;
 
 boost::asio::ip::tcp::socket &talk_to_client::get_socket() {
     return _client_socket;
+}
+
+std::string talk_to_client::username() {
+    return _username;
 }
 
 bool talk_to_client::timed_out() const {
@@ -55,6 +60,11 @@ void talk_to_client::process_request() {
     _already_read -= pos + 1;
     if (msg.find("login ")) on_login(msg);
     else if (msg.find("ping")) on_ping();
+    else if (msg.find("clients")) on_clients();
+    else {
+        std::cerr << "invalid message \"" << msg << "\"" << std::endl;
+        write("invalid message \"" + msg + "\"\n");
+    }
 }
 
 void talk_to_client::on_login(std::string msg) {
@@ -67,11 +77,22 @@ void talk_to_client::on_login(std::string msg) {
 
 void talk_to_client::clients_changed() {
     _clients_changed_flag = true;
-    //log("clients changed\n");
 }
 
 void talk_to_client::on_ping() {
-    write("ping ok\n");
+    write(_clients_changed_flag ? "clients list changed\n" : "ping ok\n" );
+    _clients_changed_flag = false;
+}
+
+void talk_to_client::on_clients() {
+    std::string msg;
+    {
+        boost::recursive_mutex::scoped_lock lock(cli_mutex);
+        for (cli_array::const_iterator b = clients.begin(), e = clients.end(); b!=e; ++b) {
+            msg += (*b)->username() + " ";
+        }
+    }
+    write("client list: " + msg + "\n");
 }
 
 void talk_to_client::write(std::string msg) {
