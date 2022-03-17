@@ -36,7 +36,9 @@ class talk_to_server {
 
   public:
       talk_to_server(const std::string &username) :
-                   _server_socket(service), _started(true), _username(username) {}
+                   _server_socket(service),
+                   _started(true),
+                   _username(username) {}
 
       void loop();
 
@@ -48,9 +50,7 @@ class talk_to_server {
 
       void process_answer();
 
-      void on_login();
-
-      void on_ping(const std::string &msg);
+      //void on_login();
 
       void on_clients();
 
