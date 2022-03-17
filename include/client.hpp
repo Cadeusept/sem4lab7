@@ -22,89 +22,52 @@
 
 extern boost::asio::io_service service;
 
-void run_client(const std::string &client_name);
+void run_client();
 
 
 class talk_to_server {
- public:
-    talk_to_server(const std::string &username) :
-                   _sock(service), _started(true), _username(username) {}
+  private:
+      boost::asio::ip::tcp::socket _server_socket;
+      enum {_max_msg = 1024};
+      int _already_read;
+      char _buffer[_max_msg];
+      bool _started;
+      std::string _username;
 
-    void loop() {
-      write("login " + _username + "\n");
-      read_answer();
-      while(_started) {
-        write_request();
-        read_answer();
-        boost::this_thread::sleep(boost::posix_time::millisec(rand() % 7000));
-      }
-    }
+  public:
+      talk_to_server(const std::string &username) :
+                   _server_socket(service), _started(true), _username(username) {}
 
-    std::string username() const {return _username;}
+      void loop();
 
-    void write_request() {
-      write("ping\n");
-    }
+      std::string username() const;
 
-    void read_answer() {
-      _already_read = 0;
-      read(_sock, boost::asio::buffer(_buff),
-           boost::bind(&talk_to_server::read_complete, this, _1, _2));
-      process_msg();
-    }
+      void ping_server();
 
-    void process_msg() {
-      std::string msg(_buff, _already_read);
-      if (msg.find("login ") == 0) on_login();
-      else if (msg.find("ping") == 0) on_ping(msg);
-      else if (msg.find("clients ") == 0) on_clients(msg);
-      else std::cerr << "invalid message \"" << msg << "\"" << std::endl;
-    }
+      void read_answer();
 
-    void on_login() {
-      do_ask_clients();
-    }
+      void process_answer();
 
-    void on_ping(const std::string &msg) {
-      std::istringstream in(msg);
-      std::string answer;
-      in >> answer >> answer;
-      if (answer == "clients_list_changed")
-          do_ask_clients();
-    }
+      void on_login();
 
-    void on_clients(const std::string &msg) {
-      std::string clients_list = msg.substr(8);
-      std::cout << _username << ", new clients list:" << clients_list;
-    }
+      void on_ping(const std::string &msg);
 
-    void do_ask_clients() {
-      write("ask_clients\n");
-      read_answer();
-    }
+      void on_clients();
 
-    void write(const std::string &msg) {
-      _sock.write_some(boost::asio::buffer(msg));
-    }
+      void do_ask_clients();
 
-    size_t read_complete(char * buf,
+      void write(const std::string &msg);
+
+      void wait_for_input();
+
+      size_t read_complete(char * buf,
                          const boost::system::error_code &err, size_t bytes) {
-      if (err) return 0;
-      bool found = std::find(buf, buf + bytes, '\n') < buf + bytes;
-      return found ? 0 : 1;
-    }
+          if (err) return 0;
+          bool found = std::find(buf, buf + bytes, '\n') < buf + bytes;
+          return found ? 0 : 1;
+      }
 
-    void connect(boost::asio::ip::tcp::endpoint endpoint) {
-      _sock.connect(endpoint);
-    }
-
-   private:
-    boost::asio::ip::tcp::socket _sock;
-    enum {max_msg = 1024};
-    int _already_read;
-    char _buff[max_msg];
-    bool _started;
-    std::string _username;
+      void connect(const boost::asio::ip::tcp::endpoint endpoint);
 };
 
 #endif  // LAB_07_SERVER_CLIENT_H
