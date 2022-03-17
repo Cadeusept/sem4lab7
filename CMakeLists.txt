@@ -22,7 +22,8 @@ HunterGate(
 
 # TODO: rename project and delete this comment
 project(lab_07_server)
-string(APPEND CMAKE_CXX_FLAGS " -pedantic -Werror -Wall -Wextra")
+string(APPEND CMAKE_CXX_FLAGS " -pedantic -Werror -Wall -Wextra -pthread -lboost_thread -lpthread -lboost_system")
+string(APPEND CMAKE_CXX_FLAGS " -DPTHREADS -DBOOST_THREAD_POSIX -DTHREAD")
 string(APPEND CMAKE_CXX_FLAGS " -Wno-unused-command-line-argument")
 string(APPEND CMAKE_CXX_FLAGS " -Wshadow -Wnon-virtual-dtor")
 
@@ -38,7 +39,7 @@ find_package(Boost CONFIG REQUIRED thread system regex chrono log filesystem log
 add_library(${PROJECT_NAME} STATIC
   # enum your files and delete this comment
         ${CMAKE_CURRENT_SOURCE_DIR}/sources/server.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/sources/client.cpp)
+        )
 
 add_executable(demo
   ${CMAKE_CURRENT_SOURCE_DIR}/demo/main.cpp)
