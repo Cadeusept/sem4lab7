@@ -22,8 +22,8 @@ HunterGate(
 
 # TODO: rename project and delete this comment
 project(lab_07_server)
-string(APPEND CMAKE_CXX_FLAGS " -pedantic -Werror -Wall -Wextra -pthread -lboost_thread -lpthread -lboost_system")
-string(APPEND CMAKE_CXX_FLAGS " -DPTHREADS -DBOOST_THREAD_POSIX -DTHREAD")
+string(APPEND CMAKE_CXX_FLAGS " -pedantic -Werror -Wall -Wextra -pthread -lboost_system -lpthread -lboost_thread")
+#string(APPEND CMAKE_CXX_FLAGS " -DPTHREADS -DBOOST_THREAD_POSIX -DTHREAD")
 string(APPEND CMAKE_CXX_FLAGS " -Wno-unused-command-line-argument")
 string(APPEND CMAKE_CXX_FLAGS " -Wshadow -Wnon-virtual-dtor")
 
@@ -33,8 +33,9 @@ hunter_add_package(GTest)
 find_package(GTest CONFIG REQUIRED)
 
 hunter_add_package(Boost COMPONENTS thread system regex chrono log filesystem)
-find_package(Boost CONFIG REQUIRED thread system regex chrono log filesystem log_setup)
+find_package(Boost CONFIG REQUIRED COMPONENTS thread system regex chrono log filesystem log_setup)
 
+include_directories(SYSTEM $ Boost_INCLUDE_DIRS})
 
 add_library(${PROJECT_NAME} STATIC
   # enum your files and delete this comment

@@ -21,6 +21,10 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <chrono>
 #include <pthread.h>
+#include <boost/thread/detail/thread.hpp>
+#include <condition_variable>
+//#include <lpthread.h>
+#include <boost/thread.hpp>
 
 
 extern boost::asio::io_service service;
