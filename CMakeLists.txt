@@ -22,7 +22,7 @@ HunterGate(
 
 # TODO: rename project and delete this comment
 project(lab_07_server)
-string(APPEND CMAKE_CXX_FLAGS " -pedantic -Werror -Wall -Wextra -pthread -lboost_system -lpthread -lboost_thread")
+string(APPEND CMAKE_CXX_FLAGS " -pedantic -Werror -Wall -Wextra -pthread -lpthread -lboost_thread -lboost_system")
 #string(APPEND CMAKE_CXX_FLAGS " -DPTHREADS -DBOOST_THREAD_POSIX -DTHREAD")
 string(APPEND CMAKE_CXX_FLAGS " -Wno-unused-command-line-argument")
 string(APPEND CMAKE_CXX_FLAGS " -Wshadow -Wnon-virtual-dtor")

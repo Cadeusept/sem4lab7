@@ -3,6 +3,10 @@
 #ifndef INCLUDE_EXAMPLE_HPP_
 #define INCLUDE_EXAMPLE_HPP_
 
+#include <boost/thread/thread.hpp>
+#include <boost/thread/detail/thread.hpp>
+#include <boost/thread.hpp>
+#include <thread>
 #include <boost/log/utility/setup.hpp>
 #include <boost/core/null_deleter.hpp>
 #include <boost/log/core.hpp>
@@ -15,17 +19,12 @@
 #include <boost/log/utility/setup/common_attributes.hpp>
 #include <boost/log/utility/setup/console.hpp>
 #include <boost/log/utility/setup/file.hpp>
-#include <boost/thread/thread.hpp>
 #include <boost/asio.hpp>
 #include <boost/asio/ip/tcp.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <chrono>
 #include <pthread.h>
-#include <boost/thread/detail/thread.hpp>
 #include <condition_variable>
-//#include <lpthread.h>
-#include <boost/thread.hpp>
-
 
 extern boost::asio::io_service service;
 
