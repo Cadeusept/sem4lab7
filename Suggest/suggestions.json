@@ -20,13 +20,18 @@
     "cost": 1
   },
   {
-    "id": "test",
-    "name": "well done",
+    "id": "wel",
+    "name": "well",
     "cost": 100
   },
   {
-    "id": "IU",
-    "name": "Best",
-    "cost": 123
+    "id": "weel",
+    "name": "well",
+    "cost": 10
+  }
+  {
+    "id": "weel",
+    "name": "wheel",
+    "cost": 150
   }
 ]

@@ -22,9 +22,9 @@ namespace net = boost::asio;       // from <boost/asio.hpp>
 using tcp = boost::asio::ip::tcp;  // from <boost/asio/ip/tcp.hpp>
 std::string make_json(const json& data) {
   std::stringstream ss;
-  if (data.is_null())
-    ss << "No suggestions";
-  else
+  if (data.is_null()) {
+    ss << std::setw(4) << json();
+  } else
     ss << std::setw(4) << data;
   return ss.str();
 }
