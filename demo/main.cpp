@@ -13,6 +13,9 @@
 
 #include "suggest.hpp"
 
+#define JSON_PATH \
+  "/home/cadeusept/Progs/C++/sem4/lab-07-http-server/Suggest/suggestions.json"
+
 namespace beast = boost::beast;    // from <boost/beast.hpp>
 namespace http = beast::http;      // from <boost/beast/http.hpp>
 namespace net = boost::asio;       // from <boost/asio.hpp>
@@ -204,7 +207,7 @@ int Run_server(int argc, char* argv[]) {
   std::shared_ptr<std::timed_mutex> mutex =
       std::make_shared<std::timed_mutex>();
   std::shared_ptr<Json_storage> storage = std::make_shared<Json_storage>(
-      "/home/maks/Documents/GitHub/bmstu-iu8-cpp-sem-3/lab-07-http-server/Suggest/suggestions.json");
+      JSON_PATH);
   std::shared_ptr<Suggestions_collection> suggestions =
       std::make_shared<Suggestions_collection>();
   try {
@@ -212,7 +215,7 @@ int Run_server(int argc, char* argv[]) {
     if (argc != 3) {
       std::cerr << "Usage: suggestion_server <address> <port>\n"
                 << "Example:\n"
-                << "    http-server-sync 0.0.0.0 8080\n";
+                << "    suggestion_server 0.0.0.0 8080\n";
       return EXIT_FAILURE;
     }
     auto const address = net::ip::make_address(argv[1]);
